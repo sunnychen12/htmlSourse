@@ -12,12 +12,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const prepareProj=require('./prepareProj.js');
 
-const paseBasePath = './src/pages';
-
-const pages=require('./getChildrenDir.js').getChildrenDir( path.resolve(__dirname, paseBasePath) );
-
 module.exports= env => {
     //console.log('NODE_ENV: ', env.NODE_ENV);
+    let paseBasePath = './src/pages';
+
+    let pages=require('./getChildrenDir.js').getChildrenDir( path.resolve(__dirname, paseBasePath) );
 
     let isProduction=env.NODE_ENV=='production';
     let isDevelopment=env.NODE_ENV=='development';
@@ -33,85 +32,72 @@ module.exports= env => {
                 jQuery: 'jquery'
                 //commonLab : require.resolve('./src/js/commonLab.js')
             }),
-            new CopyWebpackPlugin([
-                {
-                    // 源文件目录
-                    from: './src/js/commonLab.js',
-                    // 目标目录 dist目录下
-                    to: './js/commonLab.js'
-                },
-                {
-                    // 源文件目录
-                    from: './src/images',
-                    // 目标目录 dist目录下
-                    to: './images'
-                },
+            new CopyWebpackPlugin(
+                [
+                    //拷贝 脚本
+                    {
+                        // 源文件目录
+                        from: './src/js/commonLab.js',
+                        // 目标目录 dist目录下
+                        to: './js/commonLab.js'
+                    },
+                    {
+                        // 源文件目录
+                        from: './src/assets/js/**/*.js',
+                        // 目标目录 dist目录下
+                        to: './assets/js/[name].[ext]',
+                        ignore: [
+                            'sm.js',
+                            'sm.min.js',
+                            'sm-config.js',
+                            'sm-extend.js',
+                            'zepto.min.js',
+                            'cropper.js',
+                            'clipboard.min.js',
+                            'lazyload.js'
+                        ]
+                    },
 
-                {
-                    // 源文件目录
-                    from: './src/css/images',
-                    // 目标目录 dist目录下
-                    to: './css/images'
-                },
-                {
-                    // 源文件目录
-                    from: './src/css/fonts',
-                    // 目标目录 dist目录下
-                    to: './css/fonts'
-                },
-                
+                    //拷贝 图片
+                    {
+                        // 源文件目录
+                        from: './src/images',
+                        // 目标目录 dist目录下
+                        to: './images'
+                    },
+                    {
+                        // 源文件目录
+                        from: './src/css/images',
+                        // 目标目录 dist目录下
+                        to: './css/images'
+                    },
 
-
-                {
-                    // 源文件目录
-                    from: './src/assets/css/font',
-                    // 目标目录 dist目录下
-                    to: './css/font'
-                },
-
-                {
-                    // 源文件目录
-                    from: './src/assets/js/jSignature.min.noconflict.js',
-                    // 目标目录 dist目录下
-                    to: './assets/js/jSignature.min.noconflict.js'
-                },
-                {
-                    // 源文件目录
-                    from: './src/assets/js/sm-extend.min.js',
-                    // 目标目录 dist目录下
-                    to: './assets/js/sm-extend.min.js'
-                },
-                {
-                    // 源文件目录
-                    from: './src/assets/js/sm-city-picker.js',
-                    // 目标目录 dist目录下
-                    to: './assets/js/sm-city-picker.js'
-                },
-                {
-                    // 源文件目录
-                    from: './src/assets/js/template.js',
-                    // 目标目录 dist目录下
-                    to: './assets/js/template.js'
-                },
-                {
-                    // 源文件目录
-                    from: './src/assets/js/crop4/cropper.min.js',
-                    // 目标目录 dist目录下
-                    to: './assets/js/cropper.min.js'
-                },
-                {
-                    // 源文件目录
-                    from: './src/assets/js/lazyload/lazyload.min.js',
-                    // 目标目录 dist目录下
-                    to: './assets/js/lazyload.min.js'
-                },
-                {
-                    // 源文件目录
-                    from: './src/assets/html/uploadIframe.html',
-                    // 目标目录 dist目录下
-                    to: './assets/html/uploadIframe.html'
-                }
-            ]),
+                    //拷贝 字体
+                    {
+                        // 源文件目录
+                        from: './src/css/fonts',
+                        // 目标目录 dist目录下
+                        to: './css/fonts',
+                        ignore: [
+                            'style.css',
+                            'svg/*'
+                        ]
+                    },
+                    {
+                        // 源文件目录
+                        from: './src/assets/css/font',
+                        // 目标目录 dist目录下
+                        to: './css/font'
+                    },
+                    
+                    {
+                        // 源文件目录
+                        from: './src/assets/html/uploadIframe.html',
+                        // 目标目录 dist目录下
+                        to: './assets/html/uploadIframe.html'
+                    }
+                ]
+            ),
             new MiniCssExtractPlugin({
                   // Options similar to the same options in webpackOptions.output
                   // both options are optional
